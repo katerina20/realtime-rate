@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +20,6 @@ public class RateService {
     RateRepository rateRepository;
 
     public String getRateString() {
-        saveCurrentRate();
-
         List<Rate> rates = rateRepository.findAll();
         return String.format(RATE_STRING_FORMAT, getLastRate(rates), getAverageRate(rates), LocalDateTime.now());
     }
@@ -35,9 +32,5 @@ public class RateService {
     private double getAverageRate(List<Rate> rates) {
         double sum = rates.stream().flatMapToDouble(rate -> DoubleStream.of(rate.getRate())).sum();
         return sum / rates.size();
-    }
-
-    private void saveCurrentRate() {
-        rateRepository.save(new Rate(34.4 + LocalTime.now().getSecond(), LocalDateTime.now()));
     }
 }
