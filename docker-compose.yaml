@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  backend:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo_db
+    healthcheck:
+      test: curl http://localhost:8080/ || exit 1
+      interval: 60s
+      retries: 5
+      timeout: 10s
+  mongo_db:
+    image: "mongo:4.4.3"
+    restart: always
+    ports:
+      - 27017:27017
