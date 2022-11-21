@@ -1,20 +1,25 @@
 package com.company.realtimerate.controller;
 
+import com.company.realtimerate.service.RateService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.time.LocalTime;
 
 @RestController
 @RequestMapping("/api/rate")
 public class RateController {
 
-    @GetMapping
+    @Autowired
+    RateService rateService;
+
+    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> streamRate() {
         return Flux.interval(Duration.ofSeconds(30))
-                   .map(sequence -> "Flux - " + LocalTime.now().toString());
+                   .map(sequence -> rateService.getRateString());
     }
 }
