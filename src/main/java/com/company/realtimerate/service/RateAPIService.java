@@ -1,6 +1,7 @@
 package com.company.realtimerate.service;
 
 import com.company.realtimerate.model.Rate;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class RateAPIService {
 
@@ -20,6 +22,7 @@ public class RateAPIService {
     private String apiKey;
 
     public Optional<Rate> getExchangeRateUsdUah () {
+        log.info("Start connecting to API to get current rate.");
         return Optional.ofNullable(restTemplate.getForObject(String.format(URL_TEMPLATE, apiKey), Rate.class));
     }
 }

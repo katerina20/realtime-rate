@@ -2,6 +2,7 @@ package com.company.realtimerate.service;
 
 import com.company.realtimerate.model.Rate;
 import com.company.realtimerate.repository.RateRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.DoubleStream;
 
+@Log4j2
 @Service
 public class RateService {
 
@@ -31,11 +33,13 @@ public class RateService {
     }
 
     private double getLastRate(List<Rate> rates) {
+        log.info("Starting getting the latest rate from db.");
         Optional<Rate> latestRate = rates.stream().max(Comparator.comparing(Rate::getDateTime));
         return latestRate.map(Rate::getRate).orElse(0.0);
     }
 
     private double getAverageRate(List<Rate> rates) {
+        log.info("Starting getting the average rate from db.");
         double sum = rates.stream().flatMapToDouble(rate -> DoubleStream.of(rate.getRate())).sum();
         return sum / rates.size();
     }
