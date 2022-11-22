@@ -6,6 +6,8 @@ services:
       - 8080:8080
     depends_on:
       - mongo_db
+    environment:
+      API_KEY: 9b0a54d931f6c9e7710d4ab6
     healthcheck:
       test: curl http://localhost:8080/ || exit 1
       interval: 60s

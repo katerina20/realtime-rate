@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.Optional;
+
+import static java.time.LocalDateTime.now;
 
 @Service
 public class ScheduledRateSaverService {
@@ -16,8 +17,13 @@ public class ScheduledRateSaverService {
     @Autowired
     RateRepository rateRepository;
 
+    @Autowired
+    RateAPIService rateAPIService;
+
     @Scheduled(fixedDelay = 2000)
     private void saveCurrentRate() {
-        rateRepository.save(new Rate(34.4 + LocalTime.now().getSecond(), LocalDateTime.now()));
+        Optional<Rate> exchangeRateUsdUah = rateAPIService.getExchangeRateUsdUah();
+        if (exchangeRateUsdUah.isEmpty()) return;
+        rateRepository.save(new Rate(exchangeRateUsdUah.get().getRate(), now()));
     }
 }

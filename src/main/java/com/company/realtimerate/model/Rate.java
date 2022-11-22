@@ -1,15 +1,15 @@
 package com.company.realtimerate.model;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 @Document("rates")
+@NoArgsConstructor
 @RequiredArgsConstructor
 public class Rate {
 
@@ -17,6 +17,7 @@ public class Rate {
     private String id;
 
     @NonNull
+    @JsonProperty("conversion_rate")
     private double rate;
 
     @NonNull
