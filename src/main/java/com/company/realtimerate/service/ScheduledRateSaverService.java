@@ -26,4 +26,9 @@ public class ScheduledRateSaverService {
         if (exchangeRateUsdUah.isEmpty()) return;
         rateRepository.save(new Rate(exchangeRateUsdUah.get().getRate(), now()));
     }
+
+    @Scheduled(cron = "0 0 0 * * ?", zone = "Europe/Kiev")
+    private void removeDataEachDay() {
+        rateRepository.deleteAll();
+    }
 }

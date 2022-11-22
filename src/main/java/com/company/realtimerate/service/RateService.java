@@ -26,7 +26,7 @@ public class RateService {
 
     private double getLastRate(List<Rate> rates) {
         Optional<Rate> latestRate = rates.stream().max(Comparator.comparing(Rate::getDateTime));
-        return latestRate.map(Rate::getRate).orElse(1.0);
+        return latestRate.map(Rate::getRate).orElse(0.0);
     }
 
     private double getAverageRate(List<Rate> rates) {
