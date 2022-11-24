@@ -21,26 +21,31 @@ public class RateService {
 
     private static final String DATETIME_PATTERN = "dd.MM.yyyy HH:mm:ss";
 
+    private static final String NO_DATA_MESSAGE = "No data.";
+
     @Autowired
     RateRepository rateRepository;
 
     public String getRateString() {
         List<Rate> rates = rateRepository.findAll();
+        Optional<Double> lastRate = getLastRate(rates);
+        Optional<Double> averageRate = getAverageRate(rates);
+        if (lastRate.isEmpty() || averageRate.isEmpty()) return NO_DATA_MESSAGE;
         return String.format(RATE_STRING_FORMAT,
-                getLastRate(rates),
-                getAverageRate(rates),
+                lastRate.get(),
+                averageRate.get(),
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATETIME_PATTERN)));
     }
 
-    private double getLastRate(List<Rate> rates) {
+    private Optional<Double> getLastRate(List<Rate> rates) {
         log.info("Starting getting the latest rate from db.");
         Optional<Rate> latestRate = rates.stream().max(Comparator.comparing(Rate::getDateTime));
-        return latestRate.map(Rate::getRate).orElse(0.0);
+        return latestRate.map(Rate::getRate);
     }
 
-    private double getAverageRate(List<Rate> rates) {
+    private Optional<Double> getAverageRate(List<Rate> rates) {
         log.info("Starting getting the average rate from db.");
         double sum = rates.stream().flatMapToDouble(rate -> DoubleStream.of(rate.getRate())).sum();
-        return sum / rates.size();
+        return rates.isEmpty() ? Optional.empty() : Optional.of(sum / rates.size());
     }
 }
