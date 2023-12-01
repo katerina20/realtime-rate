@@ -13,7 +13,7 @@
 
 The response is shown in such format:
 
-*Текущий курс: 31,20 Средний курс: 31,10 Дата: 20.11.2022 12:21:30*
+*Current: 31,20 Average: 31,10 Date: 20.11.2022 12:21:30*
 
 For the implementation Spring Boot is used. MongoDb is used as a database.
 Microservice makes a request to external API to save current rate every 2 seconds to calculate average day rate.
