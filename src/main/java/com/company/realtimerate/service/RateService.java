@@ -17,7 +17,7 @@ import java.util.stream.DoubleStream;
 @Service
 public class RateService {
 
-    private static final String RATE_STRING_FORMAT = "Текущий курс: %.2f Средний курс: %.2f Дата: %s";
+    private static final String RATE_STRING_FORMAT = "Current: %.2f Average: %.2f Date: %s";
 
     private static final String DATETIME_PATTERN = "dd.MM.yyyy HH:mm:ss";
 
